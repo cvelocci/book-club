@@ -1,0 +1,208 @@
+/* Fuentes: Noto Sans KR para cuerpo, Nunito como fallback de Brought */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Nunito:wght@800;900&display=swap');
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* ── Fuente Brought (comercial) ── */
+/* Colocá los archivos de la fuente en /public/fonts/ y descomentá: */
+/* @font-face {
+  font-family: 'Brought';
+  src: url('/fonts/Brought.woff2') format('woff2');
+  font-weight: 400 900;
+  font-display: swap;
+} */
+
+:root {
+  /* ── Paleta principal ── */
+  --linen:      #F4F0E0;
+  --seaweed:    #3D524C;
+  --pistachio:  #C6CD85;
+  --lavender:   #9F7CEF;
+  --candyfloss: #F1CDE2;
+
+  /* Derivados */
+  --seaweed-dark:  color-mix(in srgb, var(--seaweed) 80%, black);
+  --pistachio-dark: color-mix(in srgb, var(--pistachio) 70%, black);
+  --linea:      var(--seaweed);
+  --bg-base:    var(--linen);
+
+  /* shadcn tokens (mapeados al sistema) */
+  --background:           var(--linen);
+  --foreground:           var(--seaweed);
+  --card:                 var(--linen);
+  --card-foreground:      var(--seaweed);
+  --popover:              var(--linen);
+  --popover-foreground:   var(--seaweed);
+  --primary:              var(--seaweed);
+  --primary-foreground:   var(--linen);
+  --secondary:            var(--pistachio);
+  --secondary-foreground: var(--seaweed);
+  --muted:                color-mix(in srgb, var(--linen) 60%, var(--pistachio));
+  --muted-foreground:     color-mix(in srgb, var(--seaweed) 70%, var(--linen));
+  --accent:               var(--candyfloss);
+  --accent-foreground:    var(--seaweed);
+  --destructive:          #c0392b;
+  --destructive-foreground: var(--linen);
+  --border:               var(--seaweed);
+  --input:                var(--seaweed);
+  --ring:                 var(--lavender);
+  --radius:               0px;  /* sin redondeo genérico — usar .arco explícitamente */
+
+  --sidebar:              var(--linen);
+  --sidebar-foreground:   var(--seaweed);
+  --sidebar-primary:      var(--seaweed);
+  --sidebar-primary-foreground: var(--linen);
+  --sidebar-accent:       var(--pistachio);
+  --sidebar-accent-foreground: var(--seaweed);
+  --sidebar-border:       var(--seaweed);
+  --sidebar-ring:         var(--lavender);
+}
+
+@theme inline {
+  --font-sans:  'Noto Sans KR', ui-sans-serif, system-ui, sans-serif;
+  --font-title: 'Brought', 'Nunito', 'Poppins', ui-sans-serif, sans-serif;
+
+  --color-background:        var(--background);
+  --color-foreground:        var(--foreground);
+  --color-card:              var(--card);
+  --color-card-foreground:   var(--card-foreground);
+  --color-popover:           var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary:           var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary:         var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:             var(--muted);
+  --color-muted-foreground:  var(--muted-foreground);
+  --color-accent:            var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive:       var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border:            var(--border);
+  --color-input:             var(--input);
+  --color-ring:              var(--ring);
+  --radius-sm:  0px;
+  --radius-md:  0px;
+  --radius-lg:  0px;
+  --radius-xl:  0px;
+}
+
+/* ── Reset base ────────────────────────────────────── */
+
+html, body, #app {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--linen);
+  color: var(--seaweed);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Textura de sello de goma (ruido SVG sobre el fondo) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.06;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 150px 150px;
+}
+
+a {
+  color: var(--seaweed);
+  text-decoration-color: var(--pistachio);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+a:hover { color: var(--seaweed-dark); }
+
+code {
+  font-size: 0.88em;
+  border: 1.5px solid var(--seaweed);
+  background: var(--pistachio);
+  padding: 2px 6px;
+}
+pre code { border: 0; background: transparent; padding: 0; }
+
+/* ── Utilidades de diseño ──────────────────────────── */
+
+.page-wrap {
+  width: min(1080px, calc(100% - 2rem));
+  margin-inline: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Firma visual: el arco */
+.arco {
+  border-radius: 999px 999px 0 0;
+}
+
+/* Títulos: siempre Brought (o fallback) en minúscula */
+.display-title {
+  font-family: 'Brought', 'Nunito', 'Poppins', sans-serif;
+  font-weight: 900;
+  text-transform: lowercase;
+  letter-spacing: -0.01em;
+}
+
+/* Bloque con borde seaweed — reemplaza island-shell */
+.card-flat {
+  background: var(--linen);
+  border: 2px solid var(--seaweed);
+}
+
+/* Sticker: bloque con arco + borde grueso linen */
+.sticker {
+  border-radius: 999px 999px 0 0;
+  outline: 3px solid var(--linen);
+  outline-offset: 2px;
+}
+
+/* Badge sorteado */
+.badge-sorteado {
+  background: var(--pistachio);
+  color: var(--seaweed);
+  border: 1.5px solid var(--seaweed);
+  border-radius: 0;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Animación entrada */
+.rise-in {
+  animation: rise-in 500ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Transiciones base (sin sombras) */
+button, a { transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease; }
+
+/* Sección footer */
+.site-footer {
+  border-top: 2px solid var(--seaweed);
+  background: var(--linen);
+}
+
+/* ── Base layer shadcn ─────────────────────────────── */
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  body { background-color: var(--background); color: var(--foreground); }
+}
