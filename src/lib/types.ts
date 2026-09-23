@@ -9,12 +9,18 @@ export type Book = {
   pages: number | null
   notes: string | null
   drawn_at: string | null
-  drawn_for_month: string | null  // 'YYYY-MM-DD' — mes para el que fue sorteado
+  drawn_for_month: string | null
   created_at: string
 }
 
 export type BookInsert = Omit<Book, 'id' | 'created_at'>
 export type BookUpdate = Partial<BookInsert>
+
+export type Genre = {
+  id: string
+  name: string
+  created_at: string
+}
 
 export type DrawEvent = {
   id: string

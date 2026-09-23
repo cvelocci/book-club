@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { z } from 'zod'
 import { supabaseAdmin } from './supabase.server'
-import type { Book, DrawEvent, DrawFilters, IndexData } from './types'
+import type { Book, DrawEvent, DrawFilters, Genre, IndexData } from './types'
 
 // ─── Schemas ──────────────────────────────────────────────────────────────────
 
@@ -313,4 +313,36 @@ export const importBooks = createServerFn({ method: 'POST' })
     const { data: rows, error } = await supabaseAdmin.from('books').insert(valid).select()
     if (error) throw new Error(error.message)
     return rows?.length ?? 0
+  })
+
+// ─── Géneros ──────────────────────────────────────────────────────────────────
+
+export const listGenres = createServerFn({ method: 'GET' }).handler(
+  async (): Promise<Genre[]> => {
+    const { data, error } = await supabaseAdmin
+      .from('genres')
+      .select('*')
+      .order('name', { ascending: true })
+    if (error) throw new Error(error.message)
+    return (data ?? []) as Genre[]
+  },
+)
+
+export const createGenre = createServerFn({ method: 'POST' })
+  .validator(z.object({ name: z.string().min(1, 'El nombre es obligatorio') }))
+  .handler(async ({ data }): Promise<Genre> => {
+    const { data: row, error } = await supabaseAdmin
+      .from('genres')
+      .insert({ name: data.name.trim() })
+      .select()
+      .single()
+    if (error) throw new Error(error.message)
+    return row as Genre
+  })
+
+export const deleteGenre = createServerFn({ method: 'POST' })
+  .validator(z.object({ id: z.string().uuid() }))
+  .handler(async ({ data }): Promise<void> => {
+    const { error } = await supabaseAdmin.from('genres').delete().eq('id', data.id)
+    if (error) throw new Error(error.message)
   })

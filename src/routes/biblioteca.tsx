@@ -11,6 +11,10 @@ import {
   Trash2,
   Sparkles,
   AlertTriangle,
+  ChevronDown,
+  ChevronUp,
+  Tag,
+  X,
 } from "lucide-react";
 import {
   Table,
@@ -48,8 +52,11 @@ import {
   deleteBook,
   seedDemoBooks,
   importBooks,
+  listGenres,
+  createGenre,
+  deleteGenre,
 } from "#/lib/books.functions";
-import type { Book } from "#/lib/types";
+import type { Book, Genre } from "#/lib/types";
 
 export const Route = createFileRoute("/biblioteca")({
   head: () => ({
@@ -57,29 +64,6 @@ export const Route = createFileRoute("/biblioteca")({
   }),
   component: BibliotecaPage,
 });
-
-// ─── Géneros disponibles ───────────────────────────────────────────────────────
-
-const GENRES = [
-  "Novela romántica",
-  "Romantasy",
-  "Thriller",
-  "Thriller psicológico",
-  "Novela negra",
-  "Novela distópica",
-  "Misterio",
-  "Policíaco",
-  "Fantasía",
-  "Ciencia ficción",
-  "Desarrollo personal",
-  "Ficción histórica",
-  "Ficción contemporánea",
-  "Ensayo divulgativo",
-  "Biografías",
-  "Memorias",
-  "Realismo mágico",
-  "Otro",
-];
 
 /** Formatea 'YYYY-MM-DD' → 'oct. 2026' */
 function formatMonthShort(dateStr: string): string {
@@ -116,6 +100,11 @@ function BibliotecaPage() {
   } = useQuery({
     queryKey: ["books"],
     queryFn: () => listBooks(),
+  });
+
+  const { data: genres = [] } = useQuery({
+    queryKey: ["genres"],
+    queryFn: () => listGenres(),
   });
 
   // Filtros
@@ -216,10 +205,8 @@ function BibliotecaPage() {
     }
   }
 
-  const genres = useMemo(() => {
-    const set = new Set(books.map((b) => b.genre).filter(Boolean) as string[]);
-    return Array.from(set).sort();
-  }, [books]);
+  // genres viene del useQuery de listGenres() — nombres para dropdowns
+  const genreNames = genres.map((g: Genre) => g.name)
 
   return (
     <div className="page-wrap py-8 space-y-6">
@@ -304,7 +291,7 @@ function BibliotecaPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos los géneros</SelectItem>
-            {genres.map((g) => (
+            {genreNames.map((g) => (
               <SelectItem key={g} value={g}>
                 {g}
               </SelectItem>
@@ -496,6 +483,9 @@ function BibliotecaPage() {
         </div>
       )}
 
+      {/* ── Gestión de géneros ── */}
+      <GenreManager genres={genres} />
+
       {/* ──────────────── Dialogs ──────────────── */}
 
       {/* Alta / Edición */}
@@ -544,7 +534,7 @@ function BibliotecaPage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">Sin género</SelectItem>
-                    {GENRES.map((g) => (
+                    {genreNames.map((g) => (
                       <SelectItem key={g} value={g}>
                         {g}
                       </SelectItem>
@@ -731,4 +721,102 @@ function BibliotecaPage() {
       </Dialog>
     </div>
   );
+}
+
+// ─── Gestión de géneros ───────────────────────────────────────────────────────
+
+function GenreManager({ genres }: { genres: Genre[] }) {
+  const qc = useQueryClient()
+  const [open, setOpen] = useState(false)
+  const [newName, setNewName] = useState("")
+
+  const createMut = useMutation({
+    mutationFn: (name: string) => createGenre({ data: { name } }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["genres"] })
+      setNewName("")
+    },
+  })
+
+  const deleteMut = useMutation({
+    mutationFn: (id: string) => deleteGenre({ data: { id } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["genres"] }),
+  })
+
+  return (
+    <section className="space-y-3">
+      <button
+        className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest w-full text-left"
+        style={{ color: "var(--seaweed)" }}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <Tag className="w-3.5 h-3.5" />
+        <span>géneros ({genres.length})</span>
+        {open ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+      </button>
+
+      {open && (
+        <div
+          className="card-flat p-5 space-y-4"
+        >
+          {/* Lista de géneros */}
+          <div className="flex flex-wrap gap-2">
+            {genres.map((g) => (
+              <span
+                key={g.id}
+                className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold"
+                style={{ border: "1.5px solid var(--seaweed)", color: "var(--seaweed)" }}
+              >
+                {g.name}
+                <button
+                  className="hover:text-red-600 transition-colors"
+                  disabled={deleteMut.isPending}
+                  onClick={() => deleteMut.mutate(g.id)}
+                  title="Eliminar género"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            ))}
+            {genres.length === 0 && (
+              <p className="text-sm" style={{ color: "var(--seaweed)", opacity: 0.6 }}>
+                No hay géneros cargados.
+              </p>
+            )}
+          </div>
+
+          {/* Agregar nuevo */}
+          <form
+            className="flex gap-2"
+            onSubmit={(e) => {
+              e.preventDefault()
+              if (newName.trim()) createMut.mutate(newName.trim())
+            }}
+          >
+            <input
+              type="text"
+              className="flex-1 px-3 py-1.5 text-sm bg-transparent"
+              style={{ border: "2px solid var(--seaweed)", color: "var(--seaweed)" }}
+              placeholder="Nuevo género…"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+            />
+            <button
+              type="submit"
+              disabled={!newName.trim() || createMut.isPending}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wide disabled:opacity-40"
+              style={{ background: "var(--pistachio)", color: "var(--seaweed)", border: "2px solid var(--seaweed)" }}
+            >
+              <Plus className="w-3.5 h-3.5" />
+              agregar
+            </button>
+          </form>
+
+          {createMut.error && (
+            <p className="text-xs text-red-600">{String(createMut.error)}</p>
+          )}
+        </div>
+      )}
+    </section>
+  )
 }
