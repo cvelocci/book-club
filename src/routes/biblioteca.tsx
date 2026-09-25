@@ -211,7 +211,7 @@ function BibliotecaPage() {
   return (
     <div className="page-wrap py-8 space-y-6">
       {/* ── Encabezado ── */}
-      <div className="flex items-center justify-between gap-4 flex-wrap">
+      <div className="flex items-center justify-between gap-4 flex-wrap relative">
         <div className="flex items-center gap-3">
           <Link
             to="/"
@@ -223,6 +223,9 @@ function BibliotecaPage() {
             Biblioteca
           </h1>
         </div>
+        {/* Sticker decorativo */}
+        <img src="/sticker-perro-libro.png" alt="" aria-hidden="true" className="sticker hidden md:block" style={{ width: 90, right: 160, top: -20, transform: 'rotate(8deg)' }} />
+        <img src="/sticker-anteojos.png" alt="" aria-hidden="true" className="sticker hidden lg:block" style={{ width: 65, right: 60, top: -15, transform: 'rotate(-6deg)' }} />
         <Button
           onClick={openNew}
           className="bg-[var(--pistachio)] hover:bg-[var(--seaweed)] text-[var(--seaweed)] hover:text-[var(--linen)] gap-2"
@@ -233,7 +236,9 @@ function BibliotecaPage() {
       </div>
 
       {/* ── Contador ── */}
-      <div className="card-flat p-4 flex flex-wrap gap-4 items-center text-sm text-[var(--seaweed)]">
+      <div className="card-flat textura-linen p-4 flex flex-wrap gap-4 items-center text-sm text-[var(--seaweed)] relative">
+        <img src="/sticker-kindle.png" alt="" aria-hidden="true" className="sticker hidden md:block" style={{ width: 55, top: -18, right: 30, transform: 'rotate(12deg)' }} />
+        <img src="/sticker-manta.png" alt="" aria-hidden="true" className="sticker hidden lg:block" style={{ width: 50, top: -15, right: 95, transform: 'rotate(-9deg)' }} />
         <span className="font-semibold">
           {books.length}{" "}
           {books.length === 1 ? "libro cargado" : "libros cargados"}

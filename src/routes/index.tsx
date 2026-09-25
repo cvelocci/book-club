@@ -2,7 +2,6 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  Library,
   BookOpen,
   Film,
   ChevronDown,
@@ -89,26 +88,18 @@ function HomePage() {
 
   return (
     <div className="page-wrap py-10 space-y-10">
-      {/* ── Nav ── */}
-      <header className="flex items-center justify-between py-2">
-        <h1
-          className="display-title text-3xl"
-          style={{ color: "var(--seaweed)" }}
-        >
-          club de lectura
-        </h1>
-        <Link
-          to="/biblioteca"
-          className="flex items-center gap-2 text-sm font-bold no-underline"
-          style={{ color: "var(--seaweed)" }}
-        >
-          <Library className="w-4 h-4" />
-          biblioteca
-        </Link>
-      </header>
 
-      {/* ── 1. Libro del mes ── */}
-      <section className="space-y-4 rise-in">
+      {/* ── 1. Libro del mes (hero) ── */}
+      <section className="space-y-4 rise-in relative">
+        {/* Sticker decorativo */}
+        <img
+          src="/sticker-perro-leyendo.png"
+          alt=""
+          aria-hidden="true"
+          className="sticker hidden lg:block"
+          style={{ width: 130, right: -20, top: -10, transform: 'rotate(-8deg)' }}
+        />
+
         <p
           className="text-xs font-bold uppercase tracking-widest"
           style={{ color: "var(--pistachio-dark)" }}
@@ -159,7 +150,13 @@ function HomePage() {
       </section>
 
       {/* ── 2. Consigna y sorteo ── */}
-      <section className="card-flat p-8 space-y-6">
+      <section
+        className="card-flat textura-linen p-8 space-y-6 relative"
+      >
+        {/* Stickers de ambiente */}
+        <img src="/sticker-lampara.png" alt="" aria-hidden="true" className="sticker hidden md:block" style={{ width: 70, top: -25, right: 100, transform: 'rotate(10deg)' }} />
+        <img src="/sticker-vaso-cafe.png" alt="" aria-hidden="true" className="sticker hidden md:block" style={{ width: 60, bottom: -20, right: 20, transform: 'rotate(-12deg)' }} />
+
         <div>
           <h2
             className="display-title text-2xl"
@@ -311,7 +308,11 @@ function HomePage() {
 
       {/* ── 4. Ganadores anteriores ── */}
       {pastDraws.length > 0 && (
-        <section className="space-y-3">
+        <section className="space-y-3 relative">
+          {/* Stickers de archivo */}
+          <img src="/sticker-libros-apilados.png" alt="" aria-hidden="true" className="sticker hidden lg:block" style={{ width: 80, top: -15, right: 60, transform: 'rotate(7deg)' }} />
+          <img src="/sticker-libro-abierto.png" alt="" aria-hidden="true" className="sticker hidden lg:block" style={{ width: 65, top: -10, right: 155, transform: 'rotate(-5deg)' }} />
+
           <button
             className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest w-full text-left"
             style={{ color: "var(--seaweed)" }}

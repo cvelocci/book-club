@@ -2,15 +2,14 @@ import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 import appCss from '../styles.css?url'
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {
-      staleTime: 30_000,
-      retry: 1,
-    },
+    queries: { staleTime: 30_000, retry: 1 },
   },
 })
 
@@ -21,7 +20,11 @@ export const Route = createRootRoute({
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { title: 'Club de lectura' },
     ],
-    links: [{ rel: 'stylesheet', href: appCss }],
+    links: [
+      { rel: 'stylesheet', href: appCss },
+      { rel: 'icon', type: 'image/png', href: '/sello-circular.png' },
+      { rel: 'apple-touch-icon', href: '/sello-circular.png' },
+    ],
   }),
   shellComponent: RootDocument,
 })
@@ -34,7 +37,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
-          {children}
+          <Header />
+          <main>{children}</main>
+          <Footer />
         </QueryClientProvider>
         <TanStackDevtools
           config={{ position: 'bottom-right' }}
