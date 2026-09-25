@@ -206,7 +206,7 @@ function BibliotecaPage() {
   }
 
   // genres viene del useQuery de listGenres() — nombres para dropdowns
-  const genreNames = genres.map((g: Genre) => g.name)
+  const genreNames = genres.map((g: Genre) => g.name);
 
   return (
     <div className="page-wrap py-8 space-y-6">
@@ -224,8 +224,20 @@ function BibliotecaPage() {
           </h1>
         </div>
         {/* Sticker decorativo */}
-        <img src="/sticker-perro-libro.png" alt="" aria-hidden="true" className="sticker hidden md:block" style={{ width: 90, right: 160, top: -20, transform: 'rotate(8deg)' }} />
-        <img src="/sticker-anteojos.png" alt="" aria-hidden="true" className="sticker hidden lg:block" style={{ width: 65, right: 60, top: -15, transform: 'rotate(-6deg)' }} />
+        <img
+          src="/sticker-perro-libro.png"
+          alt=""
+          aria-hidden="true"
+          className="sticker hidden md:block"
+          style={{ width: 55, right: 180, top: 60, transform: "rotate(8deg)" }}
+        />
+        <img
+          src="/sticker-anteojos.png"
+          alt=""
+          aria-hidden="true"
+          className="sticker hidden lg:block"
+          style={{ width: 55, right: 10, top: 60, transform: "rotate(-6deg)" }}
+        />
         <Button
           onClick={openNew}
           className="bg-[var(--pistachio)] hover:bg-[var(--seaweed)] text-[var(--seaweed)] hover:text-[var(--linen)] gap-2"
@@ -237,8 +249,20 @@ function BibliotecaPage() {
 
       {/* ── Contador ── */}
       <div className="card-flat textura-linen p-4 flex flex-wrap gap-4 items-center text-sm text-[var(--seaweed)] relative">
-        <img src="/sticker-kindle.png" alt="" aria-hidden="true" className="sticker hidden md:block" style={{ width: 55, top: -18, right: 30, transform: 'rotate(12deg)' }} />
-        <img src="/sticker-manta.png" alt="" aria-hidden="true" className="sticker hidden lg:block" style={{ width: 50, top: -15, right: 95, transform: 'rotate(-9deg)' }} />
+        <img
+          src="/sticker-kindle.png"
+          alt=""
+          aria-hidden="true"
+          className="sticker hidden md:block"
+          style={{ width: 55, top: 3, right: 70, transform: "rotate(12deg)" }}
+        />
+        <img
+          src="/sticker-manta.png"
+          alt=""
+          aria-hidden="true"
+          className="sticker hidden lg:block"
+          style={{ width: 50, top: 3, right: 130, transform: "rotate(-9deg)" }}
+        />
         <span className="font-semibold">
           {books.length}{" "}
           {books.length === 1 ? "libro cargado" : "libros cargados"}
@@ -731,22 +755,22 @@ function BibliotecaPage() {
 // ─── Gestión de géneros ───────────────────────────────────────────────────────
 
 function GenreManager({ genres }: { genres: Genre[] }) {
-  const qc = useQueryClient()
-  const [open, setOpen] = useState(false)
-  const [newName, setNewName] = useState("")
+  const qc = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [newName, setNewName] = useState("");
 
   const createMut = useMutation({
     mutationFn: (name: string) => createGenre({ data: { name } }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["genres"] })
-      setNewName("")
+      qc.invalidateQueries({ queryKey: ["genres"] });
+      setNewName("");
     },
-  })
+  });
 
   const deleteMut = useMutation({
     mutationFn: (id: string) => deleteGenre({ data: { id } }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["genres"] }),
-  })
+  });
 
   return (
     <section className="space-y-3">
@@ -757,20 +781,25 @@ function GenreManager({ genres }: { genres: Genre[] }) {
       >
         <Tag className="w-3.5 h-3.5" />
         <span>géneros ({genres.length})</span>
-        {open ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+        {open ? (
+          <ChevronUp className="w-3.5 h-3.5" />
+        ) : (
+          <ChevronDown className="w-3.5 h-3.5" />
+        )}
       </button>
 
       {open && (
-        <div
-          className="card-flat p-5 space-y-4"
-        >
+        <div className="card-flat p-5 space-y-4">
           {/* Lista de géneros */}
           <div className="flex flex-wrap gap-2">
             {genres.map((g) => (
               <span
                 key={g.id}
                 className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold"
-                style={{ border: "1.5px solid var(--seaweed)", color: "var(--seaweed)" }}
+                style={{
+                  border: "1.5px solid var(--seaweed)",
+                  color: "var(--seaweed)",
+                }}
               >
                 {g.name}
                 <button
@@ -784,7 +813,10 @@ function GenreManager({ genres }: { genres: Genre[] }) {
               </span>
             ))}
             {genres.length === 0 && (
-              <p className="text-sm" style={{ color: "var(--seaweed)", opacity: 0.6 }}>
+              <p
+                className="text-sm"
+                style={{ color: "var(--seaweed)", opacity: 0.6 }}
+              >
                 No hay géneros cargados.
               </p>
             )}
@@ -794,14 +826,17 @@ function GenreManager({ genres }: { genres: Genre[] }) {
           <form
             className="flex gap-2"
             onSubmit={(e) => {
-              e.preventDefault()
-              if (newName.trim()) createMut.mutate(newName.trim())
+              e.preventDefault();
+              if (newName.trim()) createMut.mutate(newName.trim());
             }}
           >
             <input
               type="text"
               className="flex-1 px-3 py-1.5 text-sm bg-transparent"
-              style={{ border: "2px solid var(--seaweed)", color: "var(--seaweed)" }}
+              style={{
+                border: "2px solid var(--seaweed)",
+                color: "var(--seaweed)",
+              }}
               placeholder="Nuevo género…"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
@@ -810,7 +845,11 @@ function GenreManager({ genres }: { genres: Genre[] }) {
               type="submit"
               disabled={!newName.trim() || createMut.isPending}
               className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wide disabled:opacity-40"
-              style={{ background: "var(--pistachio)", color: "var(--seaweed)", border: "2px solid var(--seaweed)" }}
+              style={{
+                background: "var(--pistachio)",
+                color: "var(--seaweed)",
+                border: "2px solid var(--seaweed)",
+              }}
             >
               <Plus className="w-3.5 h-3.5" />
               agregar
@@ -823,5 +862,5 @@ function GenreManager({ genres }: { genres: Genre[] }) {
         </div>
       )}
     </section>
-  )
+  );
 }
