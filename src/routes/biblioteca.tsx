@@ -229,7 +229,7 @@ function BibliotecaPage() {
           alt=""
           aria-hidden="true"
           className="sticker hidden md:block"
-          style={{ width: 55, right: 180, top: 60, transform: "rotate(8deg)" }}
+          style={{ width: 55, right: 150, top: 60, transform: "rotate(8deg)" }}
         />
         <img
           src="/sticker-anteojos.png"
@@ -254,14 +254,14 @@ function BibliotecaPage() {
           alt=""
           aria-hidden="true"
           className="sticker hidden md:block"
-          style={{ width: 55, top: 3, right: 70, transform: "rotate(12deg)" }}
+          style={{ width: 55, top: 3, right: 50, transform: "rotate(12deg)" }}
         />
         <img
           src="/sticker-manta.png"
           alt=""
           aria-hidden="true"
           className="sticker hidden lg:block"
-          style={{ width: 50, top: 3, right: 130, transform: "rotate(-9deg)" }}
+          style={{ width: 50, top: 3, right: 100, transform: "rotate(-9deg)" }}
         />
         <span className="font-semibold">
           {books.length}{" "}

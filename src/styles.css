@@ -195,11 +195,11 @@ pre code { border: 0; background: transparent; padding: 0; }
 /* Transiciones base (sin sombras) */
 button, a { transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease; }
 
-/* Sección footer
+Sección footer
 .site-footer {
   border-top: 2px solid var(--seaweed);
   background: var(--linen);
-} */
+}
 
 /* ── Base layer shadcn ─────────────────────────────── */
 @layer base {

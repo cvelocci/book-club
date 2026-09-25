@@ -1,10 +1,7 @@
 export default function Footer() {
   return (
-    <footer
-      className="mt-20 border-t-2"
-      style={{ borderColor: "var(--seaweed)", background: "var(--linen)" }}
-    >
-      {/* Imagen decorativa — altura natural, sin recorte */}
+    <footer style={{ background: "var(--linen)" }}>
+      {/* pie-de-pagina reemplaza la línea de borde */}
       <img
         src="/pie-de-pagina.png"
         alt=""
@@ -13,10 +10,7 @@ export default function Footer() {
         style={{ height: "auto" }}
       />
 
-      <div
-        className="page-wrap py-8 flex flex-col sm:flex-row items-center justify-between gap-6"
-        style={{ borderTop: "2px solid var(--seaweed)" }}
-      >
+      <div className="page-wrap py-8 flex flex-col sm:flex-row items-center justify-between gap-6">
         <img
           src="/logo-principal-transparente.png"
           alt="Club de lectura"
