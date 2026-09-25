@@ -789,7 +789,7 @@ function GenreManager({ genres }: { genres: Genre[] }) {
       </button>
 
       {open && (
-        <div className="card-flat p-5 space-y-4">
+        <div className="card-flat p-5 space-y-4 textura-linen">
           {/* Lista de géneros */}
           <div className="flex flex-wrap gap-2">
             {genres.map((g) => (

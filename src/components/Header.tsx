@@ -12,9 +12,9 @@ export default function Header() {
       <nav className="page-wrap flex items-center justify-between py-3">
         <Link to="/" className="no-underline flex items-center">
           <img
-            src="/logo-principal-transparente.png"
+            src="/sello-circular.png"
             alt="Club de lectura"
-            className="h-20 w-auto"
+            className="h-30 w-auto"
           />
         </Link>
 

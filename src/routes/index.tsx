@@ -90,15 +90,17 @@ function HomePage() {
     <div className="page-wrap py-10 space-y-10">
       {/* ── 1. Libro del mes (hero) ── */}
       <section className="space-y-4 rise-in relative">
-        {/* Sticker decorativo — eager para cargar con el resto de la página */}
+        {/* Sticker decorativo */}
         <img
           src="/sticker-perro-leyendo.png"
           alt=""
           aria-hidden="true"
-          loading="eager"
-          fetchPriority="high"
           className="sticker hidden lg:block"
-          style={{ width: 130, right: 10, top: 55 }}
+          style={{
+            width: 130,
+            right: 10,
+            top: 55,
+          }}
         />
 
         <p
@@ -161,7 +163,7 @@ function HomePage() {
           style={{
             width: 70,
             top: 25,
-            right: 20,
+            right: 23,
             transform: "rotate(10deg)",
           }}
         />
